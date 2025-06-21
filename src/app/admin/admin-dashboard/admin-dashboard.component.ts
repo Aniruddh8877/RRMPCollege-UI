@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../utils/app.service';
 import { ToastrService } from 'ngx-toastr';
-import { RequestModel } from '../../utils/interface';
+import { RequestModel, StaffLoginModel } from '../../utils/interface';
 import { LocalService } from '../../utils/local.service';
 
 @Component({
@@ -10,6 +10,8 @@ import { LocalService } from '../../utils/local.service';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
+    staffLogin: StaffLoginModel = {} as StaffLoginModel;
+  
   dataLoading: boolean = false;
   totalRegistrations: number = 0;
   todayRegistrations: number = 0;
@@ -21,12 +23,16 @@ export class AdminDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.staffLogin = this.localService.getEmployeeDetail();
     this.getDashboardCount();
   }
 
   getDashboardCount() {
+    var data = {
+      CreatedBy : this.staffLogin.StaffLoginId
+    }
     const obj: RequestModel = {
-      request: this.localService.encrypt(JSON.stringify({})).toString()
+      request: this.localService.encrypt(JSON.stringify(data)).toString()
     };
     this.dataLoading = true;
     this.service.DashboardCount(obj).subscribe((response: any) => {

@@ -21,6 +21,21 @@
     <section class="section dashboard">
         <div class="card">
             <div class="card-body ">
+                <!-- filter accordint to Institution Name angular -->
+                 <div *ngIf="this.Filter.RoleId == 5">
+                    <div class="col-sm-4">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Filter by Institution</mat-label>
+                            <mat-select name="StaffId" [(ngModel)]="Filter.StaffId" (selectionChange)="getStudentList()">
+                                <mat-option value="0">All Institutions</mat-option>
+                                <mat-option *ngFor="let staff of StaffList" [value]="staff.StaffId">
+                                    {{staff.StaffName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                </div>
                 <div class="dataTable-top">
                     <div class="dataTable-dropdown d-flex">
                         <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
@@ -33,20 +48,21 @@
                             placeholder="Search..." type="text">
                     </div>
                 </div>
+               
                 <div class="table-container overflow-auto">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th (click)="sort('StaffName')">Student Code</th>
-                                <th (click)="sort('StaffCode')">Registration Date</th>
-                                <th (click)="sort('PrincipalName')">Student Name</th>
-                                <th (click)="sort('DesignationName')">Father Name</th>
-                                <th (click)="sort('MobileNo')">Mobile No</th>
-                                <th (click)="sort('AlternateNo')">What's App No</th>
-                                <th (click)="sort('Email')">Education</th>
-                                <th (click)="sort('FullAddress')">Institution Name</th>
-                                <th (click)="sort('Status')">Status</th>
+                                <th>Institution Name</th>
+                                <th>Student Code</th>
+                                <th>Registration Date</th>
+                                <th>Student Name</th>
+                                <th>Father Name</th>
+                                <th>Mobile No</th>
+                                <th>Whatsapp No</th>
+                                <th>Education</th>
+                                <th>Status</th>
                                 <th *ngIf="action.CanEdit">Edit</th>
                                 <th *ngIf="action.CanDelete">Delete</th>
                             </tr>
@@ -55,6 +71,7 @@
                             <tr
                                 *ngFor="let item of StudentList |filter:Search:true|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
                                 <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+                                <td>{{item.StaffName}}</td>
                                 <td>{{item.StudentCode}}</td>
                                 <td>{{item.RegsitrationDate|date:"dd-MM-yy"}}</td>
                                 <td>{{item.StudentName}}</td>
@@ -62,7 +79,6 @@
                                 <td>{{item.MobileNo}}</td>
                                 <td>{{item.WhatsAppNo}}</td>
                                 <td>{{AllEducationList[item.Education]}}</td>
-                                <td>{{item.StaffName}}</td>
                                 <td>
                                     <span class="p-1"
                                         [ngClass]="item.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
@@ -228,12 +244,10 @@
 
                                 <!--alternate no-->
                                 <mat-form-field appearance="outline" class="col-sm-3 form-group">
-                                    <mat-label>WhatsApp No</mat-label>
+                                    <mat-label>Whatsapp No</mat-label>
                                     <input matInput #WhatsAppNo="ngModel" name="WhatsAppNo"
-                                        [(ngModel)]="Student.WhatsAppNo" maxlength="10" type="tel" autofocus required>
-                                    <mat-error>
-                                        WhatsApp No is <strong>required</strong>
-                                    </mat-error>
+                                        [(ngModel)]="Student.WhatsAppNo" maxlength="10" type="tel" autofocus>
+
                                 </mat-form-field>
 
 
@@ -277,7 +291,8 @@
                                 <!--fill address-->
                                 <mat-form-field appearance="outline" class="col-sm-3 form-group">
                                     <mat-label> Aadhar No</mat-label>
-                                    <input matInput #AadharNo="ngModel" name="AadharNo" maxlength="12" [(ngModel)]="Student.AadharNo">
+                                    <input matInput #AadharNo="ngModel" name="AadharNo" maxlength="12"
+                                        [(ngModel)]="Student.AadharNo">
                                     <mat-error>
                                         AadharNo is <strong>required</strong>
                                     </mat-error>

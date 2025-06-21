@@ -15,7 +15,7 @@ declare var $: any
   styleUrls: ['./student-registration.component.css']
 })
 export class StudentRegistrationComponent {
-  dataLoading: boolean = false
+  dataLoading: boolean = true
   StaffList: any = []
   StudentList: any = []
   Staff: any = {}
@@ -37,6 +37,7 @@ export class StudentRegistrationComponent {
   AllEducationList = Education;
   AllStatusList = Status;
   AllStaffTypeList = StaffType;
+  Filter:any={};
 
   sort(key: any) {
     this.sortKey = key;
@@ -63,7 +64,8 @@ export class StudentRegistrationComponent {
     // this.getDepartmentList();
     // this.getDesignationList();
 
-    this.Student.StaffId = this.staffLogin.StaffLoginId;
+      this.Student.StaffId = this.staffLogin.StaffId;
+      this.Filter.RoleId = this.staffLogin.RoleId;
   }
 
   validiateMenu() {
@@ -85,6 +87,7 @@ export class StudentRegistrationComponent {
     this.Student = {};
     this.Student.RegistrationDate = new Date();
     this.Student.Status = 1
+     this.Student.StaffId = this.staffLogin.StaffId; // Auto-select Institution again
     if (this.formStudent) {
       this.formStudent.control.markAsPristine();
       this.formStudent.control.markAsUntouched();
@@ -152,7 +155,8 @@ export class StudentRegistrationComponent {
   getStudentList() {
 
     var data = {
-      CreatedBy: this.staffLogin.StaffLoginId
+      CreatedBy: this.staffLogin.StaffLoginId,
+      StaffId: this.Filter.StaffId
     }
 
     var obj: RequestModel = {
@@ -163,6 +167,7 @@ export class StudentRegistrationComponent {
       let response = r1 as any
       if (response.Message == ConstantData.SuccessMessage) {
         this.StudentList = response.StudentList;
+        this.filterByInstitution(); 
       } else {
         this.toastr.error(response.Message)
       }
@@ -246,4 +251,17 @@ export class StudentRegistrationComponent {
     if (this.Staff.DOB)
       this.Staff.DOB = new Date(obj.DOB);
   }
+
+selectedInstitutionId: number = 0;
+FilteredStudentList: any[] = [];
+
+filterByInstitution() {
+  if (this.selectedInstitutionId && this.selectedInstitutionId != 0) {
+    this.FilteredStudentList = this.StudentList.filter((x:any) => x.StaffId === this.selectedInstitutionId);
+  } else {
+    this.FilteredStudentList = [...this.StudentList];
+  }
+}
+
+  
 }

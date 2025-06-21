@@ -19,6 +19,7 @@ export interface ActionModel {
 }
 export interface StaffLoginModel {
     StaffLoginId: number,
+    RoleId: number,
     StaffId: number,
     StaffName: string,
     UserName: string,
