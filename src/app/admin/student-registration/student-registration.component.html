@@ -22,11 +22,12 @@
         <div class="card">
             <div class="card-body ">
                 <!-- filter accordint to Institution Name angular -->
-                 <div *ngIf="this.Filter.RoleId == 5">
+                <div *ngIf="this.Filter.RoleId == 5">
                     <div class="col-sm-4">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Filter by Institution</mat-label>
-                            <mat-select name="StaffId" [(ngModel)]="Filter.StaffId" (selectionChange)="getStudentList()">
+                            <mat-select name="StaffId" [(ngModel)]="Filter.StaffId"
+                                (selectionChange)="getStudentList()">
                                 <mat-option value="0">All Institutions</mat-option>
                                 <mat-option *ngFor="let staff of StaffList" [value]="staff.StaffId">
                                     {{staff.StaffName}}
@@ -48,7 +49,7 @@
                             placeholder="Search..." type="text">
                     </div>
                 </div>
-               
+
                 <div class="table-container overflow-auto">
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -98,6 +99,19 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <tfoot *ngIf="Filter.RoleId == 5" style="background-color: #f8f9fa;">
+                            <tr>
+                                <td colspan="3"></td>
+                                <td style="font-weight: bold; text-align: right; font-size: 16px;">Total Students:-
+                                </td>
+                                <td style="text-align: center;font-weight: 700; color: #0d6efd;">
+                                    {{ StudentList.length }}
+                                </td>
+                                <td colspan="7"></td>
+                            </tr>
+                        </tfoot>
+
+
                     </table>
                 </div>
                 <div class="dataTable-bottom ">
@@ -130,8 +144,19 @@
 
                                 <mat-form-field appearance="outline" class="col-sm-3 form-group">
                                     <mat-label>Institution</mat-label>
-                                    <mat-select #StaffId="ngModel" name="StaffId" [(ngModel)]="Student.StaffId"
+                                    <mat-select name="StaffId" [(ngModel)]="Student.StaffId" disabled 
                                         required>
+                                        <mat-option *ngFor="let status of StaffList" [value]="status.StaffId">
+                                            {{ status.StaffName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+
+                                <!-- <mat-form-field appearance="outline" class="col-sm-3 form-group">
+                                    <mat-label>Institution</mat-label>
+                                    <mat-select #StaffId="ngModel" name="StaffId" [(ngModel)]="Student.StaffId"
+                                        required [ariaReadOnly]="true">
                                         <mat-option [value]="status.StaffId"
                                             *ngFor="let status of StaffList">{{status.StaffName}}</mat-option>
                                     </mat-select>
@@ -139,7 +164,7 @@
                                         *ngIf="(Status.dirty  || Status.touched) || (Status.invalid && isSubmitted)">
                                         Institution is <strong>required</strong>
                                     </mat-error>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
 
                                 <mat-form-field appearance="outline" class="col-sm-3 form-group">

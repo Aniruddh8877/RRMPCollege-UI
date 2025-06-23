@@ -58,14 +58,15 @@ export class StudentRegistrationComponent {
 
   ngOnInit(): void {
     this.staffLogin = this.localService.getEmployeeDetail();
+  this.Student.StaffId = this.staffLogin.StaffId;
+      this.Filter.RoleId = this.staffLogin.RoleId;
     this.validiateMenu();
     this.getStudentList();
     this.getStaffList();
     // this.getDepartmentList();
     // this.getDesignationList();
 
-      this.Student.StaffId = this.staffLogin.StaffId;
-      this.Filter.RoleId = this.staffLogin.RoleId;
+      
   }
 
   validiateMenu() {
@@ -167,6 +168,7 @@ export class StudentRegistrationComponent {
       let response = r1 as any
       if (response.Message == ConstantData.SuccessMessage) {
         this.StudentList = response.StudentList;
+        this.StudentList.count = response.StudentList.length;
         this.filterByInstitution(); 
       } else {
         this.toastr.error(response.Message)
@@ -262,6 +264,7 @@ filterByInstitution() {
     this.FilteredStudentList = [...this.StudentList];
   }
 }
+
 
   
 }
